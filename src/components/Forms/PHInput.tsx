@@ -10,6 +10,7 @@ type TPHInputProps = {
   sx?: SxProps;
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
 };
 
 const PHInput = ({
@@ -21,6 +22,7 @@ const PHInput = ({
   sx,
   placeholder,
   required,
+  disabled = false,
 }: TPHInputProps) => {
   const { handleSubmit, control } = useFormContext();
   return (
@@ -40,6 +42,7 @@ const PHInput = ({
           required={required}
           error={!!error?.message}
           helperText={error?.message}
+          disabled={disabled}
         />
       )}
     />
