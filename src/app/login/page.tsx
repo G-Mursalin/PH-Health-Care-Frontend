@@ -34,7 +34,7 @@ const LoginPage = () => {
       if (res?.data?.accessToken) {
         toast.success(res?.message);
         storeUserInfo({ accessToken: res?.data?.accessToken });
-        router.push("/dashboard");
+        // router.push("/dashboard");
       } else {
         setError(res.message);
       }
@@ -120,9 +120,17 @@ const LoginPage = () => {
                 </Grid>
               </Grid>
 
-              <Typography mb={1} textAlign="end" component="p" fontWeight={300}>
-                Forgot Password?
-              </Typography>
+              <Link href="/forget-password">
+                <Typography
+                  mb={1}
+                  textAlign="end"
+                  component="p"
+                  fontWeight={300}
+                  sx={{ textDecoration: "underline" }}
+                >
+                  Forgot Password?
+                </Typography>
+              </Link>
 
               <Button
                 sx={{

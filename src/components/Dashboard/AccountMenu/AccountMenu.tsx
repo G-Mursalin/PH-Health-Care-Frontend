@@ -12,6 +12,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
 import { authKey } from "@/constants/authkey";
 import { removeFromLocalStorage } from "@/utils/local-storage";
+import { logoutUser } from "@/services/actions/logoutUser";
 
 const menuStyles = {
   paper: {
@@ -52,9 +53,7 @@ export default function AccountMenu() {
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    setAnchorEl(null);
-    removeFromLocalStorage(authKey);
-    router.push("/login");
+    logoutUser(router);
   };
 
   return (
