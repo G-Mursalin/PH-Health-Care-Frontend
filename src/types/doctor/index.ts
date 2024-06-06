@@ -1,22 +1,33 @@
 export interface IDoctor {
   id: string;
   name: string;
+  email: string;
   profilePhoto: string;
   contactNumber: string;
   address: string;
   registrationNumber: string;
-  experience: number | undefined;
-  gender: "MALE" | "FEMALE";
-  appointmentFee: number | undefined;
+  experience: number;
+  gender: string;
+  appointmentFee: number;
   qualification: string;
   currentWorkingPlace: string;
   designation: string;
-  specialties?: ISpecialties[];
+  isDeleted: boolean;
+  averageRating: number;
+  createdAt: string;
+  updatedAt: string;
+  doctorSpecialties: IDoctorSpecialty[];
 }
 
-export interface ISpecialties {
-  specialtiesId: string;
-  isDeleted?: null;
+export interface IDoctorSpecialty {
+  specialitiesId: string;
+  doctorId: string;
+  specialities: ISpeciality;
+}
+interface ISpeciality {
+  id: string;
+  title: string;
+  icon: string;
 }
 
 export interface IDoctorFormData {
