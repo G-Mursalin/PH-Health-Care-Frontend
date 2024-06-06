@@ -17,6 +17,14 @@ export interface IDoctor {
   createdAt: string;
   updatedAt: string;
   doctorSpecialties: IDoctorSpecialty[];
+  doctorSchedules: IDoctorSchedule[];
+}
+interface IDoctorSchedule {
+  doctorId: string;
+  scheduleId: string;
+  isBooked: boolean;
+  appointmentId: string | null;
+  createdAt: string;
 }
 
 export interface IDoctorSpecialty {
