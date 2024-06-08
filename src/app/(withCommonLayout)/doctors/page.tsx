@@ -32,6 +32,8 @@ const Doctors = async ({ searchParams }: IDoctorsProp) => {
             {index === data.length - 1 ? null : <DashedLine />}
           </Box>
         ))}
+
+        {data.length === 0 && <Box>No Doctor Found With This Specialty</Box>}
       </Box>
     </Container>
   );
