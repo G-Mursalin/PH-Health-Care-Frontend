@@ -1,10 +1,15 @@
 import React from "react";
-import { SxProps } from "@mui/material";
-import { Controller, useFormContext } from "react-hook-form";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { SxProps, TextFieldProps, TextField } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+import { Controller, useFormContext } from "react-hook-form";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 interface ITimePicker {
   name: string;
@@ -31,24 +36,29 @@ const PHTimePicker = ({
     <Controller
       control={control}
       name={name}
-      defaultValue={dayjs(new Date().toDateString())}
+      defaultValue={dayjs().tz(dayjs.tz.guess())}
       render={({ field: { onChange, value, ...field } }) => {
         return (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <TimePicker
               {...field}
               label={label}
-              value={value || Date.now()}
-              onChange={(time) => onChange(time)}
-              timezone="system"
+              value={
+                value
+                  ? dayjs(value).tz(dayjs.tz.guess())
+                  : dayjs().tz(dayjs.tz.guess())
+              }
+              onChange={(time) =>
+                onChange(
+                  time ? dayjs(time).tz(dayjs.tz.guess()).format() : null
+                )
+              }
               slotProps={{
                 textField: {
                   required: required,
                   fullWidth: fullWidth,
                   size: size,
-                  sx: {
-                    ...sx,
-                  },
+                  sx: sx,
                   variant: "outlined",
                   error: isError,
                   helperText: isError

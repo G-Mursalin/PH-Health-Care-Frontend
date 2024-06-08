@@ -24,21 +24,16 @@ const DoctorScheduleModal = ({ open, setOpen }: TProps) => {
 
   const query: Record<string, any> = {};
 
-  console.log(selectedDate);
-
   if (!!selectedDate) {
-    query["startDate"] = dayjs(selectedDate)
-      .hour(0)
-      .minute(0)
-      .millisecond(0)
-      .toISOString();
-    query["endDate"] = dayjs(selectedDate)
-      .hour(23)
-      .minute(59)
-      .millisecond(999)
-      .toISOString();
+    // Start of the day 2024-06-06T00:00:00.000Z
+    // End of the day 2024-06-06T23:59:59.999Z
+
+    query["startDate"] = dayjs(selectedDate).utc().startOf("day").toISOString();
+
+    query["endDate"] = dayjs(selectedDate).utc().endOf("day").toISOString();
   }
 
+  // Get All Schedules that admin created
   const { data } = useGetAllSchedulesQuery(query);
   const schedules = data?.schedules;
 
@@ -50,7 +45,6 @@ const DoctorScheduleModal = ({ open, setOpen }: TProps) => {
       const res = await createDoctorSchedule({
         scheduleIds: selectedScheduleIds,
       });
-      console.log(res);
       setOpen(false);
     } catch (error) {
       console.log(error);

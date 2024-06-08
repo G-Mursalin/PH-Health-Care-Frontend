@@ -10,6 +10,10 @@ import { useEffect, useState } from "react";
 import DoctorScheduleModal from "./components/DoctorScheduleModal";
 import Pagination from "@mui/material/Pagination";
 import AddIcon from "@mui/icons-material/Add";
+import utc from "dayjs/plugin/utc";
+
+// Extend dayjs with the utc plugin
+dayjs.extend(utc);
 
 const DoctorSchedulesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -41,9 +45,13 @@ const DoctorSchedulesPage = () => {
     const updateData = schedules?.map((schedule: any, index: number) => {
       return {
         id: schedule.schedule.id,
-        startDate: dateFormatter(schedule?.schedule?.startDateTime),
-        startTime: dayjs(schedule?.startDateTime).format("hh:mm a"),
-        endTime: dayjs(schedule?.endDateTime).format("hh:mm a"),
+        startDate: dayjs
+          .utc(schedule?.schedule?.startDateTime)
+          .format("YYYY-MM-DD"),
+        startTime: dayjs
+          .utc(schedule?.schedule?.startDateTime)
+          .format("hh:mm A"),
+        endTime: dayjs.utc(schedule?.schedule?.endDateTime).format("hh:mm A"),
       };
     });
     setAllSchedule(updateData);

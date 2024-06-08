@@ -9,6 +9,14 @@ import { Button, Grid } from "@mui/material";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
+//
+import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 type TProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,14 +26,15 @@ const ScheduleModal = ({ open, setOpen }: TProps) => {
   const [createSchedule] = useCreateScheduleMutation();
 
   const handleFormSubmit = async (values: FieldValues) => {
-    values.startDate = dateFormatter(values.startDate);
-    values.endDate = dateFormatter(values.endDate);
-    values.startTime = timeFormatter(values.startTime);
-    values.endTime = timeFormatter(values.endTime);
+    values.startDate = dayjs(values.startDate).format("YYYY-MM-DD");
+    values.endDate = dayjs(values.endDate).format("YYYY-MM-DD");
+    values.startTime = dayjs(values.startTime)
+      .tz(dayjs.tz.guess())
+      .format("HH:mm");
+    values.endTime = dayjs(values.endTime).tz(dayjs.tz.guess()).format("HH:mm");
 
     try {
       const res = await createSchedule(values).unwrap();
-
       if (res?.length) {
         toast.success("Schedules created successfully!");
         setOpen(false);

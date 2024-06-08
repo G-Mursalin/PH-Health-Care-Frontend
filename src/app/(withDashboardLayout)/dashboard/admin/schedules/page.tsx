@@ -1,4 +1,5 @@
 "use client";
+
 import { Box, Button, IconButton } from "@mui/material";
 import ScheduleModal from "./components/ScheduleModal";
 import { useEffect, useState } from "react";
@@ -9,6 +10,10 @@ import { useGetAllSchedulesQuery } from "@/redux/api/scheduleApi";
 import dayjs from "dayjs";
 import { ISchedule } from "@/types/schedule";
 import { dateFormatter } from "@/utils/dateFormatter";
+import utc from "dayjs/plugin/utc";
+
+// Extend dayjs with the utc plugin
+dayjs.extend(utc);
 
 const SchedulesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -24,8 +29,8 @@ const SchedulesPage = () => {
         id: schedule?.id,
         startDate: dateFormatter(schedule.startDateTime),
         endDate: dateFormatter(schedule.endDateTime),
-        startTime: dayjs(schedule?.startDateTime).format("hh:mm a"),
-        endTime: dayjs(schedule?.endDateTime).format("hh:mm a"),
+        startTime: dayjs.utc(schedule.startDateTime).format("hh:mm a"),
+        endTime: dayjs.utc(schedule.endDateTime).format("hh:mm a"),
       };
     });
 

@@ -35,7 +35,6 @@ const ResetPassword = () => {
   }, [token]);
 
   const onSubmit = async (values: FieldValues) => {
-    console.log(values);
     const updatedData = { ...values, id };
 
     try {
